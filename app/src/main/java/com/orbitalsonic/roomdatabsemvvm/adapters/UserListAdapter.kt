@@ -58,11 +58,11 @@ class UserListAdapter:ListAdapter<UserEntity, UserListAdapter.UserViewHolder>(US
     companion object {
         private val USER_COMPARATOR = object : DiffUtil.ItemCallback<UserEntity>() {
             override fun areItemsTheSame(oldItem: UserEntity, newItem: UserEntity): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem==newItem
             }
 
             override fun areContentsTheSame(oldItem: UserEntity, newItem: UserEntity): Boolean {
-                return oldItem==newItem
+                return oldItem.id == newItem.id
             }
         }
     }
