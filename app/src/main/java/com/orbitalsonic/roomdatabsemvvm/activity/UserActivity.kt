@@ -3,10 +3,10 @@ package com.orbitalsonic.roomdatabsemvvm.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import androidx.activity.viewModels
 import androidx.lifecycle.observe
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -21,11 +21,17 @@ import com.orbitalsonic.roomdatabsemvvm.utils.BaseObject.USER_ADD_REQUEST_CODE
 import com.orbitalsonic.roomdatabsemvvm.utils.BaseObject.USER_EDIT_REQUEST_CODE
 import com.orbitalsonic.roomdatabsemvvm.utils.ObjectConverter
 import com.orbitalsonic.roomdatabsemvvm.viewmodel.UserViewModel
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 class UserActivity : BaseActivity() {
     private lateinit var binding: ActivityUserBinding
 
-    private val userViewModel: UserViewModel by viewModels()
+    private var userViewModel: UserViewModel? = null
+    private var userViewModel2: UserViewModel? = null
+
+//    private val userViewModel: UserViewModel by viewModels {
+//        UserViewModel.UserViewModelFactory((application as MainApplication).repository)
+//    }
 
     private lateinit var mAdapter: UserListAdapter
     private lateinit var userEntity: UserEntity
@@ -36,11 +42,16 @@ class UserActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user)
         title = "User Data"
 
+        userViewModel = getViewModel()
+        userViewModel2 = getViewModel()
+
+        Log.i("testingModel","$userViewModel")
+        Log.i("testingModel","$userViewModel2")
 
         iniViews()
         createRecyclerView()
 
-        userViewModel.allUserList.observe(this) { userList ->
+        userViewModel!!.allUserList.observe(this) { userList ->
 
             userList.let {
                 mAdapter.submitList(it)
@@ -92,7 +103,7 @@ class UserActivity : BaseActivity() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 userEntity = mAdapter.currentList[viewHolder.adapterPosition]
-                userViewModel.deleteUser(userEntity)
+                userViewModel!!.deleteUser(userEntity)
                 showMessage("Item Deleted!")
             }
         }).attachToRecyclerView(binding.userRecyclerview)
@@ -105,7 +116,7 @@ class UserActivity : BaseActivity() {
             if (requestCode== USER_ADD_REQUEST_CODE){
                 intentData?.getStringExtra("UserData")?.let { reply ->
                     val mUser = ObjectConverter.fromStringToObject(reply)
-                    userViewModel.insertUser(mUser)
+                    userViewModel!!.insertUser(mUser)
                 }
 
             }
@@ -113,7 +124,7 @@ class UserActivity : BaseActivity() {
             if (requestCode== USER_EDIT_REQUEST_CODE){
                 intentData?.getStringExtra("UserData")?.let { reply ->
                     val mUser = ObjectConverter.fromStringToObject(reply)
-                    userViewModel.updateUser(mUser)
+                    userViewModel!!.updateUser(mUser)
                 }
 
             }
@@ -139,6 +150,6 @@ class UserActivity : BaseActivity() {
     }
 
     private  fun clearData(){
-        userViewModel.deleteAllUser()
+        userViewModel!!.deleteAllUser()
     }
 }
