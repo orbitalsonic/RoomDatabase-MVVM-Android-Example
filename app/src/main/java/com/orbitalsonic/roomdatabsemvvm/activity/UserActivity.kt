@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbitalsonic.roomdatabsemvvm.R
 import com.orbitalsonic.roomdatabsemvvm.databinding.ActivityUserBinding
+import com.orbitalsonic.roomdatabsemvvm.MainApplication
 import com.orbitalsonic.roomdatabsemvvm.adapters.UserListAdapter
 import com.orbitalsonic.roomdatabsemvvm.datamodel.UserEntity
 import com.orbitalsonic.roomdatabsemvvm.interfaces.OnUserClickListener
@@ -19,12 +21,14 @@ import com.orbitalsonic.roomdatabsemvvm.utils.BaseObject.USER_ADD_REQUEST_CODE
 import com.orbitalsonic.roomdatabsemvvm.utils.BaseObject.USER_EDIT_REQUEST_CODE
 import com.orbitalsonic.roomdatabsemvvm.utils.ObjectConverter
 import com.orbitalsonic.roomdatabsemvvm.viewmodel.UserViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class UserActivity : BaseActivity() {
     private lateinit var binding: ActivityUserBinding
 
-    private val userViewModel: UserViewModel by viewModel()
+    private val userViewModel: UserViewModel by viewModels {
+        UserViewModel.UserViewModelFactory((application as MainApplication).repository)
+    }
+
     private lateinit var mAdapter: UserListAdapter
     private lateinit var userEntity: UserEntity
 
