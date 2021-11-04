@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbitalsonic.roomdatabsemvvm.R
 import com.orbitalsonic.roomdatabsemvvm.databinding.ActivityUserBinding
-import com.orbitalsonic.roomdatabsemvvm.MainApplication
 import com.orbitalsonic.roomdatabsemvvm.adapters.UserListAdapter
 import com.orbitalsonic.roomdatabsemvvm.datamodel.UserEntity
 import com.orbitalsonic.roomdatabsemvvm.interfaces.OnUserClickListener
@@ -26,9 +25,7 @@ import com.orbitalsonic.roomdatabsemvvm.viewmodel.UserViewModel
 class UserActivity : BaseActivity() {
     private lateinit var binding: ActivityUserBinding
 
-    private val userViewModel: UserViewModel by viewModels {
-        UserViewModel.UserViewModelFactory((application as MainApplication).repository)
-    }
+    private val userViewModel: UserViewModel by viewModels()
 
     private lateinit var mAdapter: UserListAdapter
     private lateinit var userEntity: UserEntity
@@ -43,7 +40,7 @@ class UserActivity : BaseActivity() {
         iniViews()
         createRecyclerView()
 
-        userViewModel.allUserList.observe(owner = this) { userList ->
+        userViewModel.allUserList.observe(this) { userList ->
 
             userList.let {
                 mAdapter.submitList(it)

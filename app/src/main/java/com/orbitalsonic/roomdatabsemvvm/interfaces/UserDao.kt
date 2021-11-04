@@ -2,7 +2,6 @@ package com.orbitalsonic.roomdatabsemvvm.interfaces
 
 import androidx.room.*
 import com.orbitalsonic.roomdatabsemvvm.datamodel.UserEntity
-import com.orbitalsonic.roomdatabsemvvm.datamodel.UserReportCardEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

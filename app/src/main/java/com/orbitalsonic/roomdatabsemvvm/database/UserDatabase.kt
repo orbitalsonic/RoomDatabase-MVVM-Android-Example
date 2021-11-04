@@ -6,14 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.orbitalsonic.roomdatabsemvvm.datamodel.UserEntity
-import com.orbitalsonic.roomdatabsemvvm.datamodel.UserReportCardEntity
 import com.orbitalsonic.roomdatabsemvvm.interfaces.UserDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [UserEntity::class, UserReportCardEntity::class],
-    version = 3,
+    entities = [UserEntity::class],
+    version = 1,
     exportSchema = false
 )
 abstract class UserDatabase : RoomDatabase() {
